@@ -3,7 +3,7 @@ from fastapi import FastAPI
 import uvicorn
 from src.generators.lifespan import lifespan
 from src.modules.user.router import router as user_router
-
+from src.modules.auth.router import router as auth_router
 
 app = FastAPI(
     lifespan=lifespan,
@@ -14,10 +14,23 @@ app = FastAPI(
     swagger_ui_parameters={
         "syntaxHighlight": {
             "activated": True
-        }
+        },
+        "securityDefinitions": {
+            "Bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "name": "Authorization",
+                "in": "header"
+            }
+        },
+        "security": [
+            {
+                "Bearer": []
+            }
+        ],
     },
     debug = True
-
 )
 
 origins = [
@@ -35,10 +48,11 @@ app.add_middleware(
     )
 
 app.include_router(user_router)
+app.include_router(auth_router)
 
 app.get("/ping")
 async def pong():
     return {"ping": "pong!"}
 
 if __name__ == "__main__":     
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

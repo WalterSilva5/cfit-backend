@@ -25,3 +25,6 @@ def delete_user(user_id: int):
 
 def get_all_users():
     return repository.get_all_users()
+
+def get_user_by_email(email: str):
+    return repository.get_user_by_email(email)

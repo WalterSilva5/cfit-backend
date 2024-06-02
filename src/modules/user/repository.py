@@ -23,7 +23,6 @@ def create_user(user):
     session.add(user)
     session.commit()
     session.refresh(user)
-    print(user)
     del user.hashed_password
     return user
 
@@ -47,5 +46,15 @@ def get_all_users():
             created_at=user.created_at,
             updated_at=user.updated_at) for user in data
     ]
+    session.close()
+    return data
+
+def get_user_by_email(email: str):
+    session = SessionLocal()
+    user = session.query(UserModel).filter(UserModel.email == email).first()
+    if user:
+        data = user
+    else:
+        data = None
     session.close()
     return data
