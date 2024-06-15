@@ -3,14 +3,12 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
-# Local db connection
 from src.modules.database.db_connection import Base
-# Local models
 from src.models.users_model import User
 
 config = context.config
 
-fileConfig(config.config_file_name)
+fileConfig(str(config.config_file_name))
 
 target_metadata = Base.metadata
 

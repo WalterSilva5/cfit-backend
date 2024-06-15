@@ -6,7 +6,7 @@ from pydantic import BaseModel, EmailStr
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
-    password: str
+    hashed_password: str
 
 class User(BaseModel):
     id: int
@@ -15,7 +15,13 @@ class User(BaseModel):
     is_active: bool
     created_at: Union[str, Any]
     updated_at: Union[str, None]
-  
+    role: str
 
-    class Config:
-        orm_mode = True
+class UserLogin(BaseModel):
+    email: str
+    hashed_password: str
+    role: str
+
+class UpdatePasswordRequest(BaseModel):
+    email: EmailStr
+    hashed_password: str
